@@ -19,3 +19,6 @@ where = ["src"]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
+
+[project.urls]
+Repository = "https://github.com/saadalim1978/ash-lr-logistic-regression"

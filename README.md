@@ -3,7 +3,7 @@
 Course project, College of Computer Engineering and Science, Prince Sattam bin Abdulaziz University
 Student: Saad Almusfir (448540005) · Instructor: Dr. Mahdi Khemakhem
 
-**Repository:** https://github.com/<your-username>/ash-lr  <!-- replace after pushing -->
+**Repository:** https://github.com/saadalim1978/ash-lr-logistic-regression
 
 ASH-LR (*Adaptive Stable Hybrid Logistic Regression*) minimizes the L2-regularized
 logistic loss
@@ -31,8 +31,8 @@ and figure of the report.
 ## Installation
 
 ```bash
-git clone https://github.com/<your-username>/ash-lr.git
-cd ash-lr
+git clone https://github.com/saadalim1978/ash-lr-logistic-regression.git
+cd ash-lr-logistic-regression
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
@@ -105,7 +105,7 @@ python analyze.py                         # tables (results/tables), figures (re
 ## Repository layout
 
 ```
-ash-lr/
+ash-lr-logistic-regression/
 ├── src/ashlr/
 │   ├── objectives.py     # stable loss, gradient, Hessian, Hessian-vector products, work counter
 │   ├── optimizers.py     # Armijo, CG, GD, GD-fixed, Newton, Newton-CG, L-BFGS, ASH-LR
