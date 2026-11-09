@@ -89,8 +89,8 @@ The study follows the pre-registered plan in [`EXPERIMENT_PLAN.md`](EXPERIMENT_P
 
 ```bash
 cd experiments
-python run_experiments.py all --quick     # smoke test: 2 seeds, 1 timed repetition (~3 min)
-python run_experiments.py e1 e2 e3 e4 e5  # full study (~1 h on a laptop)
+python run_experiments.py all --quick     # smoke test: 2 seeds, 1 timed repetition (~7 min)
+python run_experiments.py e1 e2 e3 e4 e5  # full study (~40 min on a 2-core machine)
 python analyze.py                         # tables (results/tables), figures (results/figures), H1 test
 ```
 
@@ -138,8 +138,9 @@ All numbers below come from `results/` and are reproduced by the commands above.
 
 Key findings:
 
-- ASH-LR, Newton and Newton-CG converged on every problem; GD failed on all
-  ill-conditioned regimes and L-BFGS on the larger and badly scaled ones.
+- In double precision, ASH-LR, Newton and Newton-CG converged on every problem; GD
+  failed on all ill-conditioned regimes and L-BFGS on the larger and badly scaled ones.
+  In float32 on raw Spambase, only direct Newton converged reliably.
 - The pre-registered hypothesis H1 (≥ 20 % fewer passes than the best matrix-free
   baseline in ≥ 2 of 5 ill-conditioned regimes) is **not supported**: Newton-CG was more
   efficient than ASH-LR in four regimes and on a par in R6 (`results/h1.json`).
