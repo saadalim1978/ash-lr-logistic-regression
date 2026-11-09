@@ -1,0 +1,64 @@
+\section{Introduction}\label{sec:intro}
+
+Logistic regression remains one of the most widely used models for binary
+classification, and fitting it is a smooth, strongly convex optimization problem
+when an $\ell_2$ penalty is added. In practice the problem is often
+\emph{ill-conditioned}: features are strongly correlated, measured on very different
+scales, or both, so that the Hessian of the objective has eigenvalues spread over
+many orders of magnitude. First-order methods then converge slowly, because their
+step size is limited by the largest curvature while progress along low-curvature
+directions is proportional to the smallest one~\cite{nocedal2006numerical,bottou2018optimization}.
+Newton-type methods are insensitive to this spread in theory, but they require
+second-order information, can take poor steps far from the solution, and, in their
+textbook form, solve a dense linear system whose cost grows as $O(nd^2+d^3)$.
+
+A second, more mundane difficulty is numerical. Evaluating
+$\log(1+e^{-z})$ and the sigmoid $1/(1+e^{-z})$ directly overflows once $|z|$
+exceeds roughly $709$ in double precision and $88$ in single precision. Such
+margins arise when features are unscaled, when the starting point is far from the
+solution, or when the data are nearly separable, and an overflowing loss silently
+breaks line searches and acceptance tests~\cite{higham2002accuracy,wiemann2024softplus}.
+
+This report studies \emph{Adaptive Stable Hybrid Logistic Regression} (ASH-LR), a
+method that combines (i) overflow-free evaluation of the loss and its derivatives,
+(ii) an initial phase of inexpensive gradient steps followed by a one-way switch to
+second-order steps, and (iii) a damped inexact Newton phase in which the system
+$(H+\mu I)p=-g$ is solved by conjugate gradients (CG) using Hessian-vector
+products only, and the damping $\mu$ is adapted by a ratio test that compares the
+actual with the predicted decrease. In the final version the damping follows the
+gradient-regularized rule $\mu_k=\sqrt{\theta_k\norm{g_k}}$, which is motivated by
+recent regularized Newton methods~\cite{mishchenko2023regularized,doikov2024super}
+and vanishes automatically near the solution.
+
+The project went through two stages. A preliminary version (Milestone~2) used
+direct linear solves and line-search-based damping; it converged on all test
+problems but needed more iterations and more time than plain Newton. Exploratory
+runs then showed that the halving damping rule kept steps over-damped for many
+iterations. The final method replaces it, and the final evaluation was fixed in a
+pre-registered plan, committed to the code repository before the final experiments
+were run, to avoid selecting favourable test cases after the fact.
+
+\paragraph{Research question} Can combining gradient steps with a damped,
+matrix-free Newton--CG phase improve the robustness and the work-to-accuracy of
+ill-conditioned logistic regression, compared with established matrix-free
+methods (Newton--CG and L-BFGS)? The pre-registered success criterion (H1) is a
+reduction of at least $20\%$ in the median number of data passes relative to the
+best converging matrix-free baseline in at least two of five predeclared
+ill-conditioned regimes.
+
+\paragraph{Contributions}
+\begin{itemize}
+  \item A complete, documented and tested implementation of ASH-LR and five
+  baselines with a common interface, an exact work counter in units of data passes,
+  and a generator of synthetic designs with an exactly prescribed condition number.
+  \item A pre-registered evaluation on eight regimes (six synthetic, two based on the
+  Spambase data set) with ten seeds each, complemented by robustness, ablation,
+  single-precision and stability experiments.
+  \item An honest assessment: we report where ASH-LR helps, where it does not, and
+  why direct Newton remains the method of choice for small dense problems.
+\end{itemize}
+
+The rest of the report is organized as follows. \Cref{sec:related} reviews related
+work, \cref{sec:method} formulates the problem and the algorithm,
+\cref{sec:setup} describes the experimental setup, \cref{sec:results} presents and
+discusses the results, and \cref{sec:conclusion} concludes.

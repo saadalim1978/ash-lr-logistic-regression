@@ -3,3 +3,12 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 results/raw/
+report/*.aux
+report/*.log
+report/*.fls
+report/*.fdb_latexmk
+report/*.bbl
+report/*.blg
+report/*.out
+report/*.spl
+report/build.log

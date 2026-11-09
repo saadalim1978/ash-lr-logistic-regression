@@ -1,0 +1,276 @@
+{
+  "regimes": {
+    "R3": {
+      "baselines_converged": {
+        "Newton-CG": true,
+        "L-BFGS": true
+      },
+      "ash_converged": 10,
+      "comparisons": {
+        "Newton-CG:passes": {
+          "median_ratio": 2.033894343151005,
+          "q1": 1.870412642669008,
+          "q3": 2.5589717741935485,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "Newton-CG:time_ms": {
+          "median_ratio": 2.313137195827302,
+          "q1": 2.0066113373223757,
+          "q3": 2.751860200575965,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "L-BFGS:passes": {
+          "median_ratio": 0.7117032392894462,
+          "q1": 0.5405281390292096,
+          "q3": 0.7378611855823651,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "L-BFGS:time_ms": {
+          "median_ratio": 0.2017758117265994,
+          "q1": 0.13871687492763526,
+          "q3": 0.2322636057595811,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "Newton:passes": {
+          "median_ratio": 5.261293179805137,
+          "q1": 4.792958370239149,
+          "q3": 6.098317094774137,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "Newton:time_ms": {
+          "median_ratio": 5.253578073302373,
+          "q1": 4.9415130864242975,
+          "q3": 6.501928524508673,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        }
+      },
+      "best_baseline": "Newton-CG",
+      "reduction": -1.1111111111111112,
+      "success": false
+    },
+    "R4": {
+      "baselines_converged": {
+        "Newton-CG": true,
+        "L-BFGS": true
+      },
+      "ash_converged": 10,
+      "comparisons": {
+        "Newton-CG:passes": {
+          "median_ratio": 2.328069777121883,
+          "q1": 1.992768697069208,
+          "q3": 2.7375991480611046,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "Newton-CG:time_ms": {
+          "median_ratio": 2.3362564250274183,
+          "q1": 2.1707634324949305,
+          "q3": 2.755193207822183,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "L-BFGS:passes": {
+          "median_ratio": 1.8004710960578012,
+          "q1": 1.7573791714150124,
+          "q3": 2.083641827923543,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "L-BFGS:time_ms": {
+          "median_ratio": 1.2076932604875386,
+          "q1": 1.0726380991113174,
+          "q3": 1.3758327408231434,
+          "wilcoxon_p": 0.01953125,
+          "baseline_converged": 10
+        },
+        "Newton:passes": {
+          "median_ratio": 1.647614954877525,
+          "q1": 1.6234422002578428,
+          "q3": 1.915932531155995,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "Newton:time_ms": {
+          "median_ratio": 9.509726446578167,
+          "q1": 8.491181308095662,
+          "q3": 11.054653692274076,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        }
+      },
+      "best_baseline": "Newton-CG",
+      "reduction": -1.262948207171315,
+      "success": false
+    },
+    "R5": {
+      "baselines_converged": {
+        "Newton-CG": true,
+        "L-BFGS": false
+      },
+      "ash_converged": 10,
+      "comparisons": {
+        "Newton-CG:passes": {
+          "median_ratio": 2.251135626216742,
+          "q1": 2.228932627059261,
+          "q3": 2.295779585472996,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "Newton-CG:time_ms": {
+          "median_ratio": 2.25856128622657,
+          "q1": 2.2154190927435495,
+          "q3": 2.4269362279859865,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "L-BFGS:passes": {
+          "median_ratio": 3.4383292383292385,
+          "q1": 3.4264444959846925,
+          "q3": 3.4512514259849594,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 0
+        },
+        "L-BFGS:time_ms": {
+          "median_ratio": 2.7774412791610232,
+          "q1": 2.749908436377286,
+          "q3": 2.9004806425302467,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 0
+        },
+        "Newton:passes": {
+          "median_ratio": 2.683721062510665,
+          "q1": 2.677002161424265,
+          "q3": 2.6965829588760593,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "Newton:time_ms": {
+          "median_ratio": 16.92105423690735,
+          "q1": 16.38470140760159,
+          "q3": 18.188967737880215,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        }
+      },
+      "best_baseline": "Newton-CG",
+      "reduction": -1.2680077871512005,
+      "success": false
+    },
+    "R6": {
+      "baselines_converged": {
+        "Newton-CG": true,
+        "L-BFGS": false
+      },
+      "ash_converged": 10,
+      "comparisons": {
+        "Newton-CG:passes": {
+          "median_ratio": 0.9254445040077961,
+          "q1": 0.7980767051675047,
+          "q3": 1.2971464386554725,
+          "wilcoxon_p": 0.921875,
+          "baseline_converged": 10
+        },
+        "Newton-CG:time_ms": {
+          "median_ratio": 0.8477194549499498,
+          "q1": 0.7888934119061769,
+          "q3": 1.2704310692840417,
+          "wilcoxon_p": 0.845703125,
+          "baseline_converged": 10
+        },
+        "L-BFGS:passes": {
+          "median_ratio": 26.038352254314283,
+          "q1": 18.07981578004875,
+          "q3": 30.41736769979848,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 0
+        },
+        "L-BFGS:time_ms": {
+          "median_ratio": 6.046543887740867,
+          "q1": 4.0512651204151515,
+          "q3": 6.7353028495647616,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 0
+        },
+        "Newton:passes": {
+          "median_ratio": 204.39592950062945,
+          "q1": 142.01531682752832,
+          "q3": 238.40086026017627,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "Newton:time_ms": {
+          "median_ratio": 252.76425490331042,
+          "q1": 193.3189304111179,
+          "q3": 321.71119734124755,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        }
+      },
+      "best_baseline": "Newton-CG",
+      "reduction": -0.17238204583856853,
+      "success": false
+    },
+    "R8": {
+      "baselines_converged": {
+        "Newton-CG": true,
+        "L-BFGS": false
+      },
+      "ash_converged": 10,
+      "comparisons": {
+        "Newton-CG:passes": {
+          "median_ratio": 1.1703557293585347,
+          "q1": 1.1241778347750397,
+          "q3": 1.305554900253851,
+          "wilcoxon_p": 0.013671875,
+          "baseline_converged": 10
+        },
+        "Newton-CG:time_ms": {
+          "median_ratio": 1.282934870873633,
+          "q1": 1.1528964565981825,
+          "q3": 1.3121492491474216,
+          "wilcoxon_p": 0.00390625,
+          "baseline_converged": 10
+        },
+        "L-BFGS:passes": {
+          "median_ratio": 1.2704731825874003,
+          "q1": 1.2201398771149128,
+          "q3": 1.3507020187948025,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 0
+        },
+        "L-BFGS:time_ms": {
+          "median_ratio": 0.4656273691644983,
+          "q1": 0.43937900619016335,
+          "q3": 0.4968321188773715,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 0
+        },
+        "Newton:passes": {
+          "median_ratio": 4.151928509535395,
+          "q1": 4.016024841831879,
+          "q3": 4.445531369640069,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        },
+        "Newton:time_ms": {
+          "median_ratio": 9.022645279014624,
+          "q1": 8.604042493704213,
+          "q3": 10.36056602833214,
+          "wilcoxon_p": 0.001953125,
+          "baseline_converged": 10
+        }
+      },
+      "best_baseline": "Newton-CG",
+      "reduction": -0.1792595391008689,
+      "success": false
+    }
+  },
+  "n_success": 0,
+  "H1_supported": false
+}

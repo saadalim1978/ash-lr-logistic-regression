@@ -1,0 +1,25 @@
+\begin{tabular}{llrrrr}
+\toprule
+Regime & Baseline & Conv. (base) & Passes ratio & Time ratio & $p$ (passes) \\
+\midrule
+R3 & Newton-CG & 10/10 & 2.03 [1.87, 2.56] & 2.31 & 0.002 \\
+ & L-BFGS & 10/10 & 0.71 [0.54, 0.74] & 0.20 & 0.002 \\
+ & Newton & 10/10 & 5.26 [4.79, 6.10] & 5.25 & 0.002 \\
+\midrule
+R4 & Newton-CG & 10/10 & 2.33 [1.99, 2.74] & 2.34 & 0.002 \\
+ & L-BFGS & 10/10 & 1.80 [1.76, 2.08] & 1.21 & 0.002 \\
+ & Newton & 10/10 & 1.65 [1.62, 1.92] & 9.51 & 0.002 \\
+\midrule
+R5 & Newton-CG & 10/10 & 2.25 [2.23, 2.30] & 2.26 & 0.002 \\
+ & L-BFGS & 0/10 & \multicolumn{3}{c}{baseline not converged} \\
+ & Newton & 10/10 & 2.68 [2.68, 2.70] & 16.92 & 0.002 \\
+\midrule
+R6 & Newton-CG & 10/10 & 0.93 [0.80, 1.30] & 0.85 & 0.922 \\
+ & L-BFGS & 0/10 & \multicolumn{3}{c}{baseline not converged} \\
+ & Newton & 10/10 & 204.40 [142.02, 238.40] & 252.76 & 0.002 \\
+\midrule
+R8 & Newton-CG & 10/10 & 1.17 [1.12, 1.31] & 1.28 & 0.014 \\
+ & L-BFGS & 0/10 & \multicolumn{3}{c}{baseline not converged} \\
+ & Newton & 10/10 & 4.15 [4.02, 4.45] & 9.02 & 0.002 \\
+\bottomrule
+\end{tabular}

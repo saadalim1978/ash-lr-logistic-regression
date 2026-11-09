@@ -1,0 +1,83 @@
+\section{Experimental setup}\label{sec:setup}
+
+\subsection{Data and regimes}
+\paragraph{Synthetic designs} We generate $X=Z\,\mathrm{diag}(\sqrt{e})\,V^\top$,
+where $Z\in\R^{n\times d}$ has orthonormal columns scaled so that $Z^\top Z/n=I$,
+$V$ is a Haar-random orthogonal matrix and the eigenvalues $e_j$ are log-spaced
+between $1$ and $1/\kappa$. Hence $X^\top X/n=V\mathrm{diag}(e)V^\top$ has condition
+number exactly $\kappa$, and designs with the same seed but different $\kappa$ share
+$Z$ and $V$. Optionally, columns are multiplied by log-spaced factors in
+$[10^{-2},10^{2}]$ to create differently scaled features. A true weight vector is
+drawn at random and rescaled so that the logits $Xw^\star$ have standard deviation
+$1.5$; labels are drawn as $y_i=+1$ with probability $\sigma(x_i^\top w^\star)$.
+
+\paragraph{Spambase} The Spambase data set~\cite{spambase} contains 4,601 e-mails
+described by 57 numeric features (word and character frequencies and capital-run
+statistics) with 1,813 spam messages. The features range over several orders of
+magnitude: the word and character frequencies are percentages, whereas
+\texttt{capital\_run\_length\_total} reaches 15,841. Hence the raw data are a natural real-world instance of bad
+scaling. The file contains 391 exact duplicate rows. They are retained, since they
+are part of the empirical objective, but test accuracies are interpreted with this
+caveat.
+
+All data sets use a stratified 75/25 train/test split; standardization (R7) uses
+training statistics only. \Cref{tab:regimes} lists the eight regimes. R3--R6 and R8
+are the five primary ill-conditioned regimes of hypothesis H1.
+
+\begin{table}[t]
+\centering
+\caption{Regimes of the study. $\kappa$ is the condition number of $X^\top X/n$
+(synthetic) and $\kappa(H_0)$ the median condition number of the Hessian at $w_0=0$
+over the ten seeds (training data).}\label{tab:regimes}
+\small
+\input{../results/tables/regimes.tex}
+\end{table}
+
+\subsection{Experiments}
+The protocol was fixed in a pre-registered plan (file \texttt{EXPERIMENT\_PLAN.md}
+of the repository) before the final runs; exploratory runs that preceded it used a
+different seed and are disclosed there.
+\begin{description}
+\item[E1 (main)] All eight regimes, ten seeds ($1000,\dots,1009$; data generation
+for R1--R6, split for R7--R8), $w_0=0$, $\lambda=10^{-6}$, six methods: GD with
+Armijo, GD with fixed step $1/L$, Newton (dense solve), Newton--CG, L-BFGS and ASH-LR.
+\item[E2 (robustness)] R2, R5, R8 with three seeds, $\lambda\in\{10^{-6},10^{-4},10^{-2}\}$
+and three starting points: $w_0=0$, and random directions rescaled so that the
+logits have standard deviation 5 (\emph{near}) or 50 (\emph{far}). The relative
+stopping rule $\norm{g}/\max(1,\norm{g_0})\le10^{-6}$ is used, since $\norm{g_0}$ can
+exceed one for random starts.
+\item[E3 (ablation)] R2, R5, R6, R8 with ten seeds and six variants of ASH-LR:
+(a) the Milestone~2 version (dense solve, line-search damping, $\mu$ adapted directly);
+(b) CG with line-search damping; (c) CG with the ratio test but $\mu$ adapted
+directly; (d) the full method; (e) the full method without the gradient phase;
+(f) dense solve with the ratio test and gradient-regularized $\mu$.
+\item[E4 (single precision)] R2, R7, R8 with three seeds; Newton, Newton--CG and
+ASH-LR in float32 and float64 with tolerance $10^{-4}$. The objective of each
+solution is re-evaluated in float64.
+\item[E5 (stability)] R2 and R8 with three seeds from an extreme starting point
+(logit standard deviation $10^3$), with the stable and the naive formulas, in both
+precisions.
+\end{description}
+
+\subsection{Stopping, metrics and timing}
+A run stops when $\norm{g}_2\le10^{-6}$, after 1,000 iterations, or when a line search
+fails. On every problem a reference value $F^*$ is computed by Newton's method with
+tolerance $10^{-10}$. We report iterations, data passes, wall time, the relative gap
+$(F-F^*)/\max(1,|F^*|)$, test accuracy, total CG iterations and rejected steps, and
+the passes and time needed to first reach relative gaps of $10^{-4}$ and $10^{-8}$.
+For timing, each method is run once untimed (warm-up) and then three times, with the
+order of methods randomized in each round; the median is reported. All other
+metrics are deterministic and identical across repetitions. For H1 and for pairwise
+comparisons we compute, per regime, the median over seeds of the ratio of ASH-LR's
+passes (or time) to the baseline's and a two-sided Wilcoxon signed-rank test over
+the ten seeds.
+
+\subsection{Implementation and environment}
+The code is written in Python~3.13 with NumPy~2.5 (OpenBLAS) and pandas; SciPy is used
+only for the Wilcoxon test. All methods share the same objective, line search,
+stopping rule and work counter. Correctness is checked by 26 unit tests, including
+centered finite-difference checks of the gradient and Hessian, a comparison of
+Hessian-vector products with the dense Hessian, finite outputs at logits of
+$\pm10^4$, monotone decrease of the objective for every method, and determinism.
+Experiments ran on a single virtual machine with two cores of an Intel Xeon
+processor at 2.10\,GHz and 8\,GB of memory, one experiment at a time.
