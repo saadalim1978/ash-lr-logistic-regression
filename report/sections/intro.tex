@@ -7,7 +7,7 @@ when an $\ell_2$ penalty is added. In practice the problem is often
 scales, or both, so that the Hessian of the objective has eigenvalues spread over
 many orders of magnitude. First-order methods then converge slowly, because their
 step size is limited by the largest curvature while progress along low-curvature
-directions is proportional to the smallest one~\cite{nocedal2006numerical,bottou2018optimization}.
+directions is proportional to the smallest one~\cite{wright2022optimization,berahas2020investigation}.
 Newton-type methods are insensitive to this spread in theory, but they require
 second-order information, can take poor steps far from the solution, and, in their
 textbook form, solve a dense linear system whose cost grows as $O(nd^2+d^3)$.
@@ -17,7 +17,7 @@ $\log(1+e^{-z})$ and the sigmoid $1/(1+e^{-z})$ directly overflows once $|z|$
 exceeds roughly $709$ in double precision and $88$ in single precision. Such
 margins arise when features are unscaled, when the starting point is far from the
 solution, or when the data are nearly separable, and an overflowing loss silently
-breaks line searches and acceptance tests~\cite{higham2002accuracy,wiemann2024softplus}.
+breaks line searches and acceptance tests~\cite{blanchard2021accurately,wiemann2024softplus}.
 
 This report studies \emph{Adaptive Stable Hybrid Logistic Regression} (ASH-LR), a
 method that combines (i) overflow-free evaluation of the loss and its derivatives,

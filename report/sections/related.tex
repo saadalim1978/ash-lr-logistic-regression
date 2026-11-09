@@ -1,61 +1,65 @@
 \section{Related work}\label{sec:related}
 
-\paragraph{Optimizers for logistic regression}
-Minka~\cite{minka2003comparison} compared gradient, conjugate-gradient, quasi-Newton
-and Newton (iteratively reweighted least squares) methods for logistic regression
-and found Newton-type methods fastest for small and medium dimension, with the cost
-of the dense Hessian becoming limiting as $d$ grows. Lin, Weng and
-Keerthi~\cite{lin2008trust} proposed a trust-region Newton method in which each
-subproblem is solved by CG with Hessian-vector products; it became the default
-large-scale solver in LIBLINEAR and is the closest relative of the second phase of
-ASH-LR. Limited-memory BFGS~\cite{liu1989limited} is the other standard
-matrix-free choice and serves as a baseline here. Bach~\cite{bach2010self} showed
-that the logistic loss is generalized self-concordant, which explains why Newton's
-method behaves well for this problem in practice.
+\paragraph{Second-order methods for logistic regression}
+Galli and Lin~\cite{galli2022truncated} carried out a systematic study of truncated
+Newton methods for linear classification, including $\ell_2$-regularized logistic
+regression. They compared line-search and trust-region globalizations and inner CG
+stopping rules within the LIBLINEAR framework and found that well-designed truncated
+Newton methods are robust and efficient across many data sets; Newton--CG with a line
+search, one of our baselines, belongs to this family. Berahas, Bollapragada and
+Nocedal~\cite{berahas2020investigation} compared Newton-Sketch and subsampled Newton
+methods on logistic regression and showed that inexact Newton-CG steps with
+Hessian-vector products are competitive with first-order methods on ill-conditioned
+problems. For quasi-Newton methods, Berahas et al.~\cite{berahas2022quasi} proposed
+sampled L-BFGS variants for machine learning; we use the classical deterministic
+L-BFGS as the second matrix-free baseline. Wright and
+Recht~\cite{wright2022optimization} give a modern treatment of the line searches,
+conjugate gradients and Newton-type methods used throughout this report.
 
-\paragraph{Inexact Newton methods}
-Dembo, Eisenstat and Steihaug~\cite{dembo1982inexact} established that Newton's
-method retains local linear, superlinear or quadratic convergence when the linear
-system is solved only to a relative residual $\eta_k$ (the \emph{forcing term}),
-provided $\eta_k$ is bounded away from one, tends to zero, or tends to zero as
-$O(\norm{g_k})$, respectively. Eisenstat and Walker~\cite{eisenstat1996forcing}
-studied adaptive choices of $\eta_k$. We use the classical choice
-$\eta_k=\min(0.5,\sqrt{\norm{g_k}})$, which yields superlinear local
-convergence~\cite[Thm.~7.2]{nocedal2006numerical}. Conjugate
-gradients~\cite{hestenes1952methods} are the natural inner solver because the
-damped Hessian is symmetric positive definite. Hessian-free methods of this type
-are also used in machine learning more broadly~\cite{martens2010deep,byrd2011stochastic}.
+\paragraph{Inexact Newton--CG with guarantees}
+Royer, O'Neill and Wright~\cite{royer2020newton} designed a Newton--CG method whose
+inner CG iterations are capped and safeguarded, and proved worst-case complexity
+bounds for smooth problems. Yao et al.~\cite{yao2023inexact} extended such guarantees
+to Newton--CG with inexact Hessian information and relaxed inner tolerances, and Lim
+and Roosta~\cite{lim2026complexity} established complexity guarantees for the related
+Newton-MR method under inexact Hessians. These works justify solving the Newton
+system only approximately, with a relative residual tolerance (forcing term) that
+decreases with the gradient norm, as ASH-LR does.
 
-\paragraph{Damping and regularized Newton methods}
-Adding $\mu I$ to the Hessian dates back to Levenberg~\cite{levenberg1944method} and
-Marquardt~\cite{marquardt1963algorithm}; adapting $\mu$ by comparing actual and
-predicted decrease is the standard trust-region mechanism~\cite{nocedal2006numerical}.
-Li, Fukushima, Qi and Yamashita~\cite{li2004regularized} analysed regularized
-Newton methods for convex problems with $\mu_k$ proportional to a power of
-$\norm{g_k}$ and showed fast local convergence even with singular Hessians.
-Mishchenko~\cite{mishchenko2023regularized} proved that the simple choice
-$\mu_k=\sqrt{H\norm{g_k}}$, with $H$ the Lipschitz constant of the Hessian, gives a
-global $O(1/k^2)$ rate together with local superlinear convergence, without line
-search, matching cubic regularization~\cite{nesterov2006cubic} at the cost of one
-linear solve per iteration. Doikov, Mishchenko and
-Nesterov~\cite{doikov2024super} extended this to a \emph{super-universal} method
-that adapts the regularization constant and the power of the gradient norm
-automatically and evaluated it on logistic regression. ASH-LR borrows the
-form $\mu_k=\sqrt{\theta_k\norm{g_k}}$ from this line of work and adapts
-$\theta_k$ with a ratio test; the theoretical guarantees of
-\cite{mishchenko2023regularized,doikov2024super} rely on their exact update rules
-and on exact linear solves, and therefore do not transfer directly to ASH-LR.
+\paragraph{Regularized and damped Newton methods}
+Adding $\mu I$ to the Hessian is the classical Levenberg--Marquardt idea; recent work
+ties $\mu$ to the gradient norm. Mishchenko~\cite{mishchenko2023regularized} proved
+that $\mu_k=\sqrt{H\norm{g_k}}$, with $H$ the Lipschitz constant of the Hessian, gives
+a global $O(1/k^2)$ rate together with local superlinear convergence without line
+search, at the cost of one linear solve per iteration. Doikov and
+Nesterov~\cite{doikov2024gradient} generalized gradient regularization to Bregman
+distances, and Doikov, Mishchenko and Nesterov~\cite{doikov2024super} proposed a
+\emph{super-universal} method that adapts the regularization constant and the power of
+the gradient norm automatically and evaluated it on logistic regression. Hanzely et
+al.~\cite{hanzely2022damped} showed that a damped Newton method with an explicit step
+size achieves global $O(1/k^2)$ and local quadratic rates for self-concordant-type
+functions. ASH-LR adopts the form $\mu_k=\sqrt{\theta_k\norm{g_k}}$ from this line of
+work and adapts $\theta_k$ by a ratio test. The guarantees
+of~\cite{mishchenko2023regularized,doikov2024super,doikov2024gradient} rely on their
+exact update rules and exact linear solves, so they do not transfer directly to
+ASH-LR.
 
-\paragraph{Numerical stability}
-Evaluating the softplus function $\log(1+e^{t})$ stably is a well-known
-issue~\cite{higham2002accuracy}; Wiemann, Kneib and
-Hambuckers~\cite{wiemann2024softplus} discuss the softplus identity in the context
-of link functions for generalized linear models. We use the equivalent
-\texttt{logaddexp} formulation and a sign-dependent sigmoid.
+\paragraph{Numerical stability and precision}
+Blanchard, Higham and Higham~\cite{blanchard2021accurately} analysed the rounding
+errors of log-sum-exp and softmax and showed that the shifted formulation is
+accurate; the logistic loss is the two-term case, $\log(1+e^{-z})=\mathrm{lse}(0,-z)$.
+Wiemann, Kneib and Hambuckers~\cite{wiemann2024softplus} use the softplus function to
+build link functions for generalized linear models and rely on the same stable
+identity. Higham and Mary~\cite{higham2022mixed} survey mixed-precision linear algebra
+and explain when single precision is safe; their analysis of conditioning versus unit
+roundoff underlies our float32 experiment. Randomized Nystr\"om
+preconditioning~\cite{frangella2023randomized} is one recent way to make CG robust to
+ill-conditioning and is relevant to the bottleneck we identify.
 
-\paragraph{Adaptive second-order methods for streaming data}
+\paragraph{Streaming second-order methods and benchmarking}
 Godichon-Baggioni and Werge~\cite{godichon2025adaptive} develop inversion-free
 stochastic Newton methods with $O(dN)$ cost for ill-conditioned streaming problems,
-illustrating both the benefit and the expense of curvature information. Our setting
-is deterministic batch optimization, but the trade-off between the cost of curvature
-information and the iterations it saves is the same question we study.
+illustrating both the benefit and the expense of curvature information; our setting
+is deterministic batch optimization. Finally, Benchopt~\cite{moreau2022benchopt}
+argues for transparent, reproducible optimization benchmarks with fixed protocols,
+which motivated the pre-registered design of our evaluation.

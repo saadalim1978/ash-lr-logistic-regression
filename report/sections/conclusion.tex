@@ -21,7 +21,7 @@ accuracy of the unpreconditioned CG solve, not the damping, limits progress.
 For practitioners, the results suggest a simple rule: evaluate the loss stably, use
 direct Newton when $d$ is small enough to form the Hessian, and otherwise use
 Newton--CG, preferably on standardized features. Future work should
-(i) add a diagonal preconditioner to the CG solver, which targets the observed
+(i) add a diagonal or randomized Nystr\"om preconditioner~\cite{frangella2023randomized} to the CG solver, which targets the observed
 bottleneck; (ii) test damped Newton--CG without the gradient phase, which the
 ablation identified as promising on badly scaled data, in a new pre-registered study;
 (iii) extend the evaluation to high-dimensional sparse data, where matrix-free

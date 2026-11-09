@@ -109,7 +109,8 @@ Passes = median data passes. (a) is the Milestone~2 method and (d) the final met
 the median passes in R2, R5 and R6 (by 35\%, 19\% and 27\%) and, in R2 and R5,
 cut the number of iterations by roughly 70\%. Only on raw Spambase did it help slightly (3,121 vs.
 3,193 passes). Because Newton's method on the logistic loss is well behaved from
-$w_0=0$---the loss is generalized self-concordant~\cite{bach2010self}---the
+$w_0=0$, as also observed for truncated Newton methods on linear
+classification~\cite{galli2022truncated}, the
 cautious start that motivated the gradient phase is rarely needed. This finding is
 post hoc: the final method was frozen with the gradient phase, as specified.
 
@@ -169,7 +170,7 @@ double precision and wall times 4--55\% lower. On raw Spambase (R8), however,
 Newton--CG converged on none and ASH-LR on one of three seeds, while direct Newton
 converged on all. With a Hessian condition number near $10^{9}$, which exceeds
 $1/\epsilon_{\text{float32}}\approx1.7\times10^{7}$, the rounding errors in the
-Hessian-vector products and CG recurrences are large enough to make the inexact
+Hessian-vector products and CG recurrences~\cite{higham2022mixed} are large enough to make the inexact
 Newton steps unreliable, whereas the dense factorization still delivers usable
 steps. Single precision is therefore safe only for reasonably scaled data when the
 inner solver is CG.
@@ -220,7 +221,8 @@ and, on badly scaled data, L-BFGS did not. This supports the premise of the proj
 expensive from distant starts. The damping mechanism worked as designed---$\mu$
 grew after rejected steps and vanished near the solution---but with CG as the inner
 solver the bottleneck in badly scaled problems is the accuracy of the inner solve,
-which damping cannot fix. A diagonal (Jacobi) preconditioner or feature scaling would
+which damping cannot fix. A diagonal (Jacobi) or randomized Nystr\"om
+preconditioner~\cite{frangella2023randomized}, or simply feature scaling, would
 attack the actual cause; the dramatic difference between R7 and R8, which differ
 only by standardization, makes the same point from the data side.
 

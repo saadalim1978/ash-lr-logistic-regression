@@ -37,7 +37,7 @@ Let $g_k=\nabla F(w_k)$ and $H_k=\nabla^2F(w_k)$. The methods compared use
 L-BFGS uses the two-loop recursion with memory $m=10$ and skips curvature pairs
 with $s^\top y\le10^{-10}\norm{s}\norm{y}$. Except for GD with fixed step $1/L$,
 $L=\norm{X}_2^2/(4n)+\lambda$, all line searches use Armijo
-backtracking~\cite{armijo1966minimization}: starting from $\alpha=1$, the step is
+backtracking~\cite{wright2022optimization}: starting from $\alpha=1$, the step is
 halved until $F(w_k+\alpha p_k)\le F(w_k)+c\,\alpha\, g_k^\top p_k$ with $c=10^{-4}$,
 for at most 40 trials.
 
@@ -49,8 +49,10 @@ $r=-g_k-(H_k+\mu_kI)p$ satisfies
 \begin{equation}\label{eq:forcing}
   \norm{r}\le\eta_k\norm{g_k},\qquad \eta_k=\min\bigl(0.5,\sqrt{\norm{g_k}}\bigr),
 \end{equation}
-or after $d$ iterations. Because $H_k+\mu_kI$ is positive definite, every CG
-iterate is a descent direction~\cite{nocedal2006numerical}.
+or after $d$ iterations. A forcing term that decreases with $\norm{g_k}$ preserves the
+fast local convergence of Newton's method while keeping early inner solves
+cheap~\cite{royer2020newton,yao2023inexact}. Because $H_k+\mu_kI$ is positive definite, every CG
+iterate is a descent direction~\cite{wright2022optimization}.
 
 \subsection{Switching rule}
 ASH-LR starts with Armijo gradient steps and switches, once and for all, to the
