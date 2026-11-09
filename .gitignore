@@ -12,3 +12,4 @@ report/*.blg
 report/*.out
 report/*.spl
 report/build.log
+report/
