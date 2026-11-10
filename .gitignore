@@ -13,3 +13,4 @@ report/*.out
 report/*.spl
 report/build.log
 report/
+slides/
