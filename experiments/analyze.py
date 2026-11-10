@@ -8,6 +8,7 @@ from __future__ import annotations
 import gzip
 import json
 import pickle
+import re
 
 import matplotlib
 
@@ -222,7 +223,7 @@ def e3_summary(df):
         for r in regs:
             row = s[(s.regime == r) & (s.method == v)].iloc[0]
             cells += [f"{int(row.conv)}/10", fmt_int(row.passes)]
-        lines.append(f"{v} & " + " & ".join(cells) + r" \\")
+        lines.append(f"{v.replace(' mu', r' $\mu$')} & " + " & ".join(cells) + r" \\")
     lines += [r"\bottomrule", r"\end{tabular}"]
     (TAB / "e3_ablation.tex").write_text("\n".join(lines))
     return s
@@ -264,7 +265,7 @@ def e5_summary(df):
                 lines.append(f"{rid if first else ''} & {dt} & {'stable' if st else 'naive'} & "
                              f"{int(sub.loc['Newton'].conv)}/{int(sub.loc['Newton'].n)} & "
                              f"{int(sub.loc['ASH-LR'].conv)}/{int(sub.loc['ASH-LR'].n)} & "
-                             f"{', '.join(fails).replace('_', ' ') or '--'} \\\\")
+                             f"{', '.join(fails).replace('non_finite', 'non-finite').replace('_', ' ') or '--'} \\\\")
                 first = False
         lines.append(r"\midrule" if rid != "R8" else r"\bottomrule")
     lines.append(r"\end{tabular}")
@@ -292,7 +293,8 @@ def fig_convergence(h, df, seed=1000, xkey="passes", fname="convergence_passes")
         ax.set_yscale("log")
         ax.set_xscale("log")
         ax.set_ylim(1e-14, 1)
-        ax.set_title(f"{rid}: {REGIMES[rid]['desc']}", fontsize=8.5)
+        desc = re.sub(r"kappa=1e(\d+)", r"$\\kappa=10^{\1}$", REGIMES[rid]["desc"])
+        ax.set_title(f"{rid}: {desc}", fontsize=8.5)
         ax.set_xlabel("data passes" if xkey == "passes" else "time (ms)")
     axes[0].set_ylabel(r"relative gap $(F-F^*)/\max(1,|F^*|)$")
     handles, labels = axes[0].get_legend_handles_labels()
